@@ -1,1 +1,7 @@
 # Defaults handlers for role lsyncd
+
+- name: restart_lsyncd_instances
+  service:
+    name: "lsyncd@{{ item.name }}"
+    state: restarted
+  with_items: "{{ lsyncd_rsync_configs }}"  

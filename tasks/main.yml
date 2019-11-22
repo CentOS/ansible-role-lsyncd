@@ -31,6 +31,9 @@
     dest: "/etc/lsyncd.d/{{ item.name }}.conf" 
   with_items: "{{ lsyncd_rsync_configs }}"
   when: lsyncd_rsync_configs is defined 
+  notify: restart_lsyncd_instances
+  loop_control:
+    label: '{{ item.name }}'
 
 - name: Enabling lsyncd instances
   service:
@@ -39,7 +42,8 @@
     enabled: True
   with_items: "{{ lsyncd_rsync_configs }}"
   when: lsyncd_rsync_configs is defined 
-  no_log: True  
+  loop_control:
+    label: '{{ item.name }}'
   tags:
     - systemd
 

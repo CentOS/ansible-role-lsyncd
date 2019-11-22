@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=simple
 ExecStart=/usr/bin/lsyncd -nodaemon /etc/lsyncd.d/%i.conf
+LimitNOFILE=65536
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
-Restart=on-failure
-LimitNOFILE=65536
