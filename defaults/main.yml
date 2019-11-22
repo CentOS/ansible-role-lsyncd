@@ -1,1 +1,9 @@
 # Defaults variables for role lsyncd
+
+# List of local folders to watch and rsync to target, can be rsync:: url
+# Not existing in default setup
+# example:
+# lsyncd_rsync_configs:
+#   - name: test
+#     source: /etc/
+#     target: remote.host::rsync_module

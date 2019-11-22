@@ -1,0 +1,6 @@
+sync {
+    default.rsync,
+    source = "{{ item.source }}",
+    target = "{{ item.target }}",
+    init   = false
+}

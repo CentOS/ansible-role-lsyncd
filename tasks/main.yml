@@ -1,1 +1,45 @@
 # Defaults tasks for role lsyncd
+
+- name: Installing lsyncd
+  yum:
+    name: lsyncd
+    state: installed
+
+- name: Ensuring we have a folder for our configs
+  file:
+    path: /etc/lsyncd.d
+    state: directory
+    owner: root
+    group: root
+
+- name: Adding lsyncd unit to systemd
+  copy:
+    src: lsyncd@.service
+    dest: /etc/systemd/system/lsyncd@.service
+    owner: root
+  register: lsyncd_systemd
+  tags:
+    - systemd
+
+- name: Reloading systemd if needed
+  shell: /usr/bin/systemctl daemon-reload
+  when: lsyncd_systemd is changed
+
+- name: Distributing instances config files
+  template:
+    src: snippet.conf.j2
+    dest: "/etc/lsyncd.d/{{ item.name }}.conf" 
+  with_items: "{{ lsyncd_rsync_configs }}"
+  when: lsyncd_rsync_configs is defined 
+
+- name: Enabling lsyncd instances
+  service:
+    name: "lsyncd@{{ item.name }}"
+    state: started
+    enabled: True
+  with_items: "{{ lsyncd_rsync_configs }}"
+  when: lsyncd_rsync_configs is defined 
+  no_log: True  
+  tags:
+    - systemd
+

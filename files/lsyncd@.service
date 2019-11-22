@@ -1,0 +1,12 @@
+[Unit]
+Description=Live Syncing (Mirror) Daemon - config %i
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/lsyncd -nodaemon /etc/lsyncd.d/%i.conf
+
+[Install]
+WantedBy=multi-user.target
+Restart=on-failure
+LimitNOFILE=65536
