@@ -28,7 +28,8 @@
 - name: Distributing instances config files
   template:
     src: snippet.conf.j2
-    dest: "/etc/lsyncd.d/{{ item.name }}.conf" 
+    dest: "/etc/lsyncd.d/{{ item.name }}.conf"
+    mode: 0644
   with_items: "{{ lsyncd_rsync_configs }}"
   when: lsyncd_rsync_configs is defined 
   notify: restart_lsyncd_instances
