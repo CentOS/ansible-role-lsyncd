@@ -7,3 +7,6 @@
 #   - name: test
 #     source: /etc/
 #     target: remote.host::rsync_module
+
+# Increased based on your directory/file structure 
+sysctl_fs_inotify_max_user_watches: '1524288'
